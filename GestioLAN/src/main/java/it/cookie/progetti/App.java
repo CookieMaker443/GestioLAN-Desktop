@@ -1,15 +1,20 @@
 package it.cookie.progetti;
 
+
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+// import javafx.fxml.FXMLLoader;
+// import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.ResourceBundle;
+import java.util.Locale;
 
-public class App extends Application
+public class App extends Application implements EventHandler<ActionEvent>
 {
     Button button;
 
@@ -20,7 +25,9 @@ public class App extends Application
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        button = new Button("Click Me");
+        Locale locale = Locale.forLanguageTag("it-IT");
+        ResourceBundle bundle = ResourceBundle.getBundle("i18n.language", locale);
+        button = new Button(bundle.getString("button.login"));
         button.setOnAction(e -> System.out.println("Hello, JavaFX!"));
 
         StackPane plane = new StackPane();
@@ -28,8 +35,13 @@ public class App extends Application
 
         Scene scene = new Scene(plane, 300, 200);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("GestioLAN Client");
+        primaryStage.setTitle(bundle.getString("app.title"));
         primaryStage.show();
     }
 
+    @Override
+    public void handle(ActionEvent event) {
+        
+        
+    }
 }
