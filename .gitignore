@@ -5,8 +5,8 @@
 GestioLAN/target/
 
 # Ignora i log e i report di test di Maven
-GestioLAN/surefire-reports/
-GestioLAN/failsafe-reports/
+GestioLAN/target/surefire-reports/*
+GestioLAN/target/failsafe-reports/*
 GestioLAN/test-output/
 
 # ----------------------------------------------------------------------
@@ -39,3 +39,9 @@ hs_err_pid*
 # ----------------------------------------------------------------------
 # Quando esegui mvn clean install, a volte crea questi in locale
 dependency-reduced-pom.xml
+
+# ----------------------------------------------------------------------
+# 5. File di risorse assets
+# ----------------------------------------------------------------------
+
+GestioLAN/src/main/resources/assets/images/
