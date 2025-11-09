@@ -79,6 +79,13 @@
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.0.0</version>
         </plugin>
+        <!-- JavaFX Maven Plugin -->
+        <plugin>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-maven-plugin</artifactId>
+            <version>0.0.8</version> <configuration>
+                <mainClass>it.cookie.progetti.App</mainClass> </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>
