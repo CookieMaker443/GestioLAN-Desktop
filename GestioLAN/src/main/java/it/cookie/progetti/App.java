@@ -39,7 +39,16 @@ public class App extends Application implements EventHandler<ActionEvent>
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/LoginView.fxml"), bundle);
         Parent root = loader.load(); // Carica l'interfaccia dal file FXML
 
-        Scene scene = new Scene(root, 300, 200);
+        final double MIN_WIDTH = 768;
+        final double MIN_HEIGHT = 512;
+        
+        // 1. Imposta la dimensione iniziale della Scene
+        Scene scene = new Scene(root, MIN_WIDTH, MIN_HEIGHT); 
+
+        // 2. Imposta i limiti minimi allo Stage (la finestra)
+        primaryStage.setMinWidth(MIN_WIDTH); 
+        primaryStage.setMinHeight(MIN_HEIGHT);
+        
         primaryStage.setScene(scene);
         primaryStage.setTitle(bundle.getString("app.title"));
         primaryStage.show();
