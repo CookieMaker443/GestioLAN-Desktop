@@ -2,15 +2,15 @@
 # 1. Maven Build Artifacts (Devono essere ignorati ovunque)
 # ----------------------------------------------------------------------
 # Ignora la cartella di output di Maven
-GestioLAN/target/
+target/
 
 GEMINI.md
 LLM_output/
 
 # Ignora i log e i report di test di Maven
-GestioLAN/target/surefire-reports/*
-GestioLAN/target/failsafe-reports/*
-GestioLAN/test-output/
+target/surefire-reports/*
+target/failsafe-reports/*
+test-output/
 
 # ----------------------------------------------------------------------
 # 2. Artifacts del Sistema Operativo e IDE
@@ -47,4 +47,4 @@ dependency-reduced-pom.xml
 # 5. File di risorse assets
 # ----------------------------------------------------------------------
 
-GestioLAN/src/main/resources/assets/images/
+src/main/resources/assets/images/
