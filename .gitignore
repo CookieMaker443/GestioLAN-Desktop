@@ -47,4 +47,12 @@ dependency-reduced-pom.xml
 # 5. File di risorse assets
 # ----------------------------------------------------------------------
 
-src/main/resources/assets/images/
+src/main/resources/assets/images/*.png
+src/main/resources/assets/images/*.jpeg
+src/main/resources/assets/images/*.svg
+src/main/resources/assets/images/*.xcf
+
+src/main/resources/assets/images/svgs/*.png
+src/main/resources/assets/images/svgs/*.jpeg
+src/main/resources/assets/images/svgs/*.svg
+src/main/resources/assets/images/svgs/*.xcf
