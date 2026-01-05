@@ -10,14 +10,11 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 
 public class App extends Application implements EventHandler<ActionEvent>
 {
-    Button button;
-
     public static void main( String[] args )
     {
         launch(args);
@@ -27,17 +24,17 @@ public class App extends Application implements EventHandler<ActionEvent>
     public void start(Stage primaryStage) throws Exception {
         Locale locale = Locale.forLanguageTag("it-IT");
         ResourceBundle bundle = ResourceBundle.getBundle("i18n.language", locale);
-        button = new Button(bundle.getString("button.login"));
-        button.setOnAction(e -> System.out.println("Hello, JavaFX!"));
 
+        //button = new Button(bundle.getString("button.login"));
+        //button.setOnAction(e -> System.out.println("Hello, JavaFX!"));
         //StackPane plane = new StackPane();
         //plane.getChildren().add(button);
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/LoginView.fxml"), bundle);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/Login/LoginView.fxml"), bundle);
         Parent root = loader.load(); // Carica l'interfaccia dal file FXML
 
         final double MIN_WIDTH = 768;
-        final double MIN_HEIGHT = 512;
+        final double MIN_HEIGHT = 544;
         
         // 1. Imposta la dimensione iniziale della Scene
         Scene scene = new Scene(root, MIN_WIDTH, MIN_HEIGHT); 

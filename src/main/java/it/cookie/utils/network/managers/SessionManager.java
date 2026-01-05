@@ -6,7 +6,18 @@ import it.cookie.utils.network.user.user;
 import javafx.scene.image.Image;
 
 public class SessionManager implements Observer{
+
     user current_user;
+    private static SessionManager instance;
+
+    private SessionManager() {}
+
+    public static SessionManager getInstance() {
+        if (instance == null) {
+            instance = new SessionManager();
+        }
+        return instance;
+    }
 
     public String GetUsername() {
         return current_user.GetUsername();
