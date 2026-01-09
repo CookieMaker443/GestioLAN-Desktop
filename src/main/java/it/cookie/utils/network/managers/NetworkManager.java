@@ -9,6 +9,7 @@ import java.util.Properties;
 public class NetworkManager {
     String ip_addr;  
     int port;
+    int timeout = 2000; // in millisecondi
 
     public static NetworkManager istance;
     private Properties props = new Properties();
@@ -64,11 +65,11 @@ public class NetworkManager {
         return "http://" + ip_addr + ":" + port;
     }
 
-    public String getIP() {
-        return ip_addr;
-    }
+    public String getIP() { return ip_addr; }
 
-    public int getPort() {
-        return port;
-    }
+    public int getPort() { return port; }
+
+    public int getTimeout() { return timeout; }
+
+    public void setTimeout(int timeout) { this.timeout = timeout; }
 }
