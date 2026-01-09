@@ -3,9 +3,8 @@ package it.cookie.utils.network.managers;
 import it.cookie.utils.interfaces.observer.Observer;
 import it.cookie.utils.interfaces.observer.Subject;
 import it.cookie.utils.network.user.user;
-import javafx.scene.image.Image;
 
-public class SessionManager implements Observer{
+public class SessionManager extends Subject implements Observer{
 
     user current_user;
     private static SessionManager instance;
@@ -20,56 +19,47 @@ public class SessionManager implements Observer{
     }
 
     public String GetUsername() {
-        return current_user.GetUsername();
+        return current_user.getUsername();
     }
 
     private void SetUsername(String username) {
-        current_user.SetUsername(username);
-    }
-
-    public Image GetUserImage() {
-        return current_user.GetUserImage();
-    }
-
-    private void SetUserImage(Image user_image) {
-        current_user.SetUserImage(user_image);
-    }
-
-    public String GetUserImagePath() {
-        return current_user.GetUserImagePath();
-    }
-
-    private void SetUserImagePath(String user_image_path) {
-        current_user.SetUserImagePath(user_image_path);
+        current_user.setUsername(username);
     }
 
     public String GetEmail() {
-        return current_user.GetEmail();
+        return current_user.getEmail();
     }
 
     private void SetEmail(String email) {
-        current_user.SetEmail(email);
+        current_user.setEmail(email);
     }
 
     public String GetJWT() {
-        return current_user.GetJWT();
+        return current_user.getJWT();
     }
 
     private void SetJWT(String JWT) {
-        current_user.SetJWT(JWT);
+        current_user.setJWT(JWT);
     }
 
     @Override
     public void Update(Subject subject, Object state) {
         // Aggiorna tutti i valori dopo aver aggiornato il database
         // # TODO: Fixxare questa parte, aggiorare i dati per bene
-        if(state instanceof user) {
-            user u = (user) state;
-            SetUsername(u.GetUsername());
-            SetUserImage(u.GetUserImage());
-            SetUserImagePath(u.GetUserImagePath());
-            SetEmail(u.GetEmail());
-            SetJWT(u.GetJWT());
+        if(state instanceof user u) {
+            this.current_user = u;
+            Notify(u); // Successo
+        } else {
+            this.current_user = null;
+            Notify(null); // Fallimento: sveglia il LoginController per riabilitare il tasto!
         }
-    }    
+    }
+
+    public void ClearSession() {
+        current_user = null;
+    }
+
+    public boolean IsUserLogged() {
+        return current_user != null;
+    }
 }

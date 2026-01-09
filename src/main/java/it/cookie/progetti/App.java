@@ -4,16 +4,15 @@ package it.cookie.progetti;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import it.cookie.utils.network.managers.SessionManager;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 
-public class App extends Application implements EventHandler<ActionEvent>
+public class App extends Application
 {
     public static void main( String[] args )
     {
@@ -29,6 +28,9 @@ public class App extends Application implements EventHandler<ActionEvent>
         //button.setOnAction(e -> System.out.println("Hello, JavaFX!"));
         //StackPane plane = new StackPane();
         //plane.getChildren().add(button);
+
+        // Pulisce la Sessione ad ogni avvio
+        SessionManager.getInstance().ClearSession();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/Login/LoginView.fxml"), bundle);
         Parent root = loader.load(); // Carica l'interfaccia dal file FXML
@@ -48,9 +50,5 @@ public class App extends Application implements EventHandler<ActionEvent>
         primaryStage.show();
     }
 
-    @Override
-    public void handle(ActionEvent event) {
-        System.out.println("Button clicked!");
-        
-    }
+    
 }

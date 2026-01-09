@@ -14,6 +14,10 @@ public class Subject {
         observers.remove(o);
     }
 
+    public void DetachAll() {
+        observers.clear();
+    }
+
     public void Notify(Object state) {
         for (Observer o : observers) {
             o.Update(this, state);

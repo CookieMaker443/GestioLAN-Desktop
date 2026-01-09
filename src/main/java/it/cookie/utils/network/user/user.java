@@ -1,69 +1,49 @@
 package it.cookie.utils.network.user;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
-import javafx.scene.image.Image;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+// serve per dire a jackson di ignorare i campi non presenti in questa classe
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class user {
-    String username;
-    Image user_image;
-    String user_image_path;
-    String email;
-    String JWT;
-    public Date dateCreated;
+    
+    @JsonProperty("username")
+    private String username;
+    
+    @JsonProperty("email")
+    private String email;
+    
+    @JsonProperty("JWT")
+    private String JWT;
 
-    public user(String username, Image user_image, String user_image_path, String email, String JWT, Date dateCreated) {
+    // Mappato 'createTime' (dal JSON creato dall API C#) su 'dateCreated' (qui in Java)
+    @JsonProperty("createTime")
+    private LocalDateTime dateCreated;
+
+    public user() {}
+
+    public user(String username, String email, String JWT, LocalDateTime dateCreated) {
         this.username = username;
-        this.user_image = user_image;
-        this.user_image_path = user_image_path;
+
         this.email = email;
         this.JWT = JWT;
         this.dateCreated = dateCreated;
     }
 
-    public String GetUsername() {
-        return username;
-    }
+    // Getter e Setter standard (usato la minuscola per seguire gli standard Java)
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
 
-    public Image GetUserImage() {
-        return user_image;
-    }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public String GetUserImagePath() {
-        return user_image_path;
-    }
+    public String getJWT() { return JWT; }
+    public void setJWT(String JWT) { this.JWT = JWT; }
 
-    public String GetEmail() {
-        return email;
-    }
-
-    public String GetJWT() {
-        return JWT;
-    }
-
-    public Date GetDateCreated() {
-        return dateCreated;
-    }
-
-    public void SetJWT(String JWT) {
-        this.JWT = JWT;
-    }   
-
-    public void SetUsername(String username) {
-        this.username = username;
-    }
-
-    public void SetUserImage(Image user_image) {
-        this.user_image = user_image;
-    }
-
-    public void SetUserImagePath(String user_image_path) {
-        this.user_image_path = user_image_path;
-    }
-
-    public void SetEmail(String email) {
-        this.email = email;
-    }
+    public LocalDateTime getDateCreated() { return dateCreated; }
+    public void setDateCreated(LocalDateTime dateCreated) { this.dateCreated = dateCreated; }
 
     
 }
