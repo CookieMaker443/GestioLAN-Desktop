@@ -44,7 +44,14 @@ public class LoginController implements Observer{
     @FXML
     private Button ChangeServerButton;
 ;
-    
+    @FXML
+    public void initialize() {
+        System.out.println("LoginController inizializzato: collego i componenti...");
+        
+        // Colleghiamo la rete al SessionManager
+        userNetController.Attach(SessionManager.getInstance());
+    }
+
     @FXML
     private void handleLoginButtonAction() throws IOException {
         if (usernameField.getText().isEmpty() || passwordField.getText().isEmpty()) {
@@ -60,12 +67,10 @@ public class LoginController implements Observer{
         
         System.out.println("Attempting login with Username: " + username);
 
-        // passa la richiesta di login al UserNetController
-        userNetController.Attach(SessionManager.getInstance());
         // appena  il SessionManager e pronto, chiama questo update()
         SessionManager.getInstance().Attach(this);  
 
-        // Esegui il login
+        // passa la richiesta di login al UserNetController ed esegui il login
         userNetController.UserLogin(username, password); 
     }
 
@@ -74,6 +79,7 @@ public class LoginController implements Observer{
     public void Update(Subject subject, Object state) {
         javafx.application.Platform.runLater(() -> {
             // Disabilitato l'ascolto per evitare doppie chiamate istantanee
+            System.out.println("LoginController ha ricevuto Update dal SessionManager.");
             SessionManager.getInstance().Detach(this);
             loginButton.setDisable(false);
 
@@ -82,11 +88,14 @@ public class LoginController implements Observer{
                    switchToMainMenu();
                 } catch (IOException e) {
                     e.printStackTrace();
+                    System.out.println("Forse errore di connessione?");
                 }
+            } else if (state instanceof String errorKey){
+                // Qui state è una stringa di errore del bundle. 
+                showAlert(bundle.getString("login.Error"), bundle.getString(errorKey), AlertType.ERROR);
             } else {
-                // Qui state è null. 
-                // TODO:  passare un messaggio d'errore dal NetController
-                showAlert(bundle.getString("login.Error"), bundle.getString("login.INVALID_CREDENTIALS"), AlertType.ERROR);
+                // Caso generico se state fosse null
+                showAlert(bundle.getString("login.Error"), bundle.getString("login.CONNECTION_ERROR"), AlertType.ERROR);
             }
         });
     }
@@ -171,5 +180,6 @@ public class LoginController implements Observer{
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+        userNetController.DetachAll(); // Evita di tenere Observer inutili
     } 
 }

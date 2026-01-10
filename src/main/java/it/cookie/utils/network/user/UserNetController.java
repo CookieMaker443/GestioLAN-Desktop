@@ -16,7 +16,7 @@ import it.cookie.utils.network.managers.NetworkManager;
 public class UserNetController extends Subject {
     private final HttpClient httpClient = HttpClient.newHttpClient();
     private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
-    private boolean connectionSuccessful = false;
+    
     
     // Salva i dati nel SessionManager
     public void UserLogin(String username, String password) {
@@ -45,8 +45,8 @@ public class UserNetController extends Subject {
                         handleSuccessfulLogin(response.body());
                     } else {
                         System.err.println("Errore Login: " + response.statusCode() + " - " + response.body());
-                        connectionSuccessful = false;
-                        Notify(null);
+                        String errorMessage = "login.INVALID_CREDENTIALS"; // Default
+                        Notify(errorMessage);
                         // creare un popup con il messaggio di errore dal server
                     }
                 }).exceptionally(ex -> {
@@ -56,10 +56,19 @@ public class UserNetController extends Subject {
                     System.err.println("Causa: " + ex.getCause()); 
                     System.err.println("Messaggio: " + ex.getMessage());
             
-                    // Fondamentale: avvisiamo il LoginController che la festa è finita
-                    connectionSuccessful = false;
-                    Notify(null);
-                    this.DetachAll(); // Evita di tenere Observer inutili 
+                    Throwable cause = ex.getCause();
+                    String errorKey = "login.CONNECTION_ERROR"; // Default
+
+                    if (cause instanceof java.net.http.HttpConnectTimeoutException) {
+                        errorKey = "login.SERVER_TIMEOUT";
+                    } else if (cause instanceof java.net.ConnectException) {
+                        errorKey = "login.SERVER_UNREACHABLE";
+                    }
+
+                    System.err.println("Errore rilevato: " + errorKey);
+    
+                    
+                    Notify(errorKey); // <--- PASSIAMO LA STRINGA, NON NULL
                     return null;
             });
         
@@ -77,16 +86,13 @@ public class UserNetController extends Subject {
             loggedUser.setJWT("temp_jwt_token");
 
             // Update() del SessionManager
-            connectionSuccessful = true;
             Notify(loggedUser);
-            this.DetachAll(); // Evita di tenere Observer inutili
+            
             
             System.out.println("Login effettuato con successo!");
         } catch (Exception e) {
-            connectionSuccessful = false;
-            Notify(null);
-            this.DetachAll(); // Evita di tenere Observer inutili
             System.err.println("Errore nel parsing della risposta: " + e.getMessage());
+            Notify("login.ParsingError");
         }
         
     }
@@ -99,6 +105,4 @@ public class UserNetController extends Subject {
         // #TODO: qui chiama il notify per aggiornare i dati
         Notify(user);
     }
-
-    public boolean IsConnectionSuccessful() { return connectionSuccessful; }
 }

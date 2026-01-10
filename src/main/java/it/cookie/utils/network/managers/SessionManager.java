@@ -45,13 +45,13 @@ public class SessionManager extends Subject implements Observer{
     @Override
     public void Update(Subject subject, Object state) {
         // Aggiorna tutti i valori dopo aver aggiornato il database
-        // # TODO: Fixxare questa parte, aggiorare i dati per bene
         if(state instanceof user u) {
             this.current_user = u;
             Notify(u); // Successo
         } else {
             this.current_user = null;
-            Notify(null); // Fallimento: sveglia il LoginController per riabilitare il tasto!
+            // passa la stringa di errore
+            Notify(state); // Fallimento: sveglia il LoginController per riabilitare il tasto!
         }
     }
 
