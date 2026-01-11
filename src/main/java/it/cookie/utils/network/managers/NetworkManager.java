@@ -1,5 +1,6 @@
 package it.cookie.utils.network.managers;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,8 +13,14 @@ public class NetworkManager {
     int timeout = 2000; // in millisecondi
 
     public static NetworkManager istance;
-    private Properties props = new Properties();
-    private final String CONFIG_PATH = "config/server.properties";
+
+    private final Properties props = new Properties();
+    private final String HTTP = "http://";
+    private final String HTTPS = "https://";
+    private final String PATH_TO_RES = "src/main/resources/";
+    private final String PATH = "config/";
+    private final String FILE_NAME = "server.properties";
+    private final String CONFIG_PATH = PATH_TO_RES + PATH + FILE_NAME;
 
     private NetworkManager() {
         loadConfig();
@@ -32,37 +39,36 @@ public class NetworkManager {
         this.ip_addr = newIp;
         this.port = newPort;
         
-        // Per salvare su file in modo persistente fuori dal JAR, 
+        // #TODO: Salvare in un file esterno
         // di solito si usa un percorso nel filesystem (es. cartella utente)
-        try (OutputStream output = new FileOutputStream("server.properties")) {
+        try (OutputStream output = new FileOutputStream(CONFIG_PATH)) {
             props.setProperty("server.ip", newIp);
             props.setProperty("server.port", String.valueOf(newPort));
             props.store(output, "Server Configuration");
         } catch (IOException io) {
-            io.printStackTrace();
+            // o.printStackTrace();
+            System.out.println("Salvataggio configurazione non riuscita");
         }
     }
 
     // Carica i dati dal file
-    public void loadConfig() {
+    private void loadConfig() {
         // getResourceAsStream - il file è dentro il JAR/Risorse
-        try (InputStream input = getClass().getClassLoader().getResourceAsStream(CONFIG_PATH)) {
-            if (input == null) {
-                System.out.println("Configurazione non trovata, uso valori di default");
-                this.ip_addr = "localhost";
-                this.port = 8080;
-                return;
-            }
+        //try (InputStream input = getClass().getClassLoader().getResourceAsStream(CONFIG_PATH)) 
+        try (InputStream input = new FileInputStream(CONFIG_PATH)){
             props.load(input);
             this.ip_addr = props.getProperty("server.ip");
             this.port = Integer.parseInt(props.getProperty("server.port"));
         } catch (IOException ex) {
-            ex.printStackTrace();
+            // ex.printStackTrace();
+            System.out.println("Configurazione non trovata, uso valori di default");
+            this.ip_addr = "localhost";
+            this.port = 8080;
         }
     }
 
     public String GetBaseURL() {
-        return "http://" + ip_addr + ":" + port;
+        return HTTP + ip_addr + ":" + port;
     }
 
     public String getIP() { return ip_addr; }

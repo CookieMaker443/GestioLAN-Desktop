@@ -26,7 +26,6 @@ public class user {
 
     public user(String username, String email, String JWT, LocalDateTime dateCreated) {
         this.username = username;
-
         this.email = email;
         this.JWT = JWT;
         this.dateCreated = dateCreated;

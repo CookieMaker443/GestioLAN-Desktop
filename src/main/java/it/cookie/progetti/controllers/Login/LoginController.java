@@ -53,6 +53,7 @@ public class LoginController implements Observer{
     }
 
     @FXML
+    @SuppressWarnings("unused")
     private void handleLoginButtonAction() throws IOException {
         if (usernameField.getText().isEmpty() || passwordField.getText().isEmpty()) {
             System.out.println("Username or Password is empty!");
@@ -83,11 +84,11 @@ public class LoginController implements Observer{
             SessionManager.getInstance().Detach(this);
             loginButton.setDisable(false);
 
-            if (state instanceof user u) {
+            if (state instanceof user) {
                try {
                    switchToMainMenu();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    // e.printStackTrace();
                     System.out.println("Forse errore di connessione?");
                 }
             } else if (state instanceof String errorKey){
@@ -100,40 +101,8 @@ public class LoginController implements Observer{
         });
     }
 
-    // Dare unocchiata
-    /*
-    @Override
-    public void Update(Subject subject, Object state) {
-        if(state instanceof user u) { // se cel'user, connessione riuscita
-            // Platform.runLater sposta l'esecuzione dal thread worker al thread JavaFX
-            javafx.application.Platform.runLater(() -> {
-                try {
-                    // se il SessionManager è stato aggiornato con un user valido, procedi
-                    if (SessionManager.getInstance().IsUserLogged()) {
-                        switchToMainMenu();
-                        // Rimozione dell'Observer per evitare aggiornamenti futuri e memory leak
-                        SessionManager.getInstance().Detach(this); 
-                    } else {
-                        showAlert(bundle.getString("login.Error"), bundle.getString("login.CONNECTION_ERROR"), AlertType.ERROR);
-                        // Rimozione dell'Observer anche qui per evitare di venir "aggiunto" piu volte se spam clicchi il login ed evitare memory leak
-                        SessionManager.getInstance().Detach(this); 
-                        loginButton.setDisable(false);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-        } else { // probabile errore di connessione
-            javafx.application.Platform.runLater(() -> {
-                showAlert(bundle.getString("login.Error"), bundle.getString("login.CONNECTION_ERROR"), AlertType.ERROR);
-                // Rimozione dell'Observer anche qui per evitare di venir "aggiunto" piu volte se spam clicchi il login ed evitare memory leak
-                SessionManager.getInstance().Detach(this); 
-                loginButton.setDisable(false);
-            });
-        }  
-    } */
-
     @FXML
+    @SuppressWarnings("unused")
     private void handleChangeServerButton(ActionEvent event) throws IOException {
         try {
         // Carica la vista del ServerConfigView
@@ -156,13 +125,22 @@ public class LoginController implements Observer{
         popupStage.setMinHeight(381); // Impedisce alla finestra di abbassarsi troppo
 
         popupStage.setTitle(bundle.getString("login.ChangeServer"));
-        Scene scene = new Scene(root, 256,128);
+        Scene changeServerScene = new Scene(root, 256,128);
 
-        popupStage.setScene(scene);
-        popupStage.showAndWait(); 
+        popupStage.setScene(changeServerScene);
+
+        // Centra la finestra popup rispetto alla finestra di partenza
+        double centerX = starterStage.getX() + starterStage.getWidth() / 2;
+        double centerY = starterStage.getY() + starterStage.getHeight() / 2;
+
+        popupStage.setX(centerX - 512.0 / 2);
+        popupStage.setY(centerY - 381.0 / 2);
+
+        popupStage.showAndWait();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
+            System.out.println("Errore nel caricamento della finestra di configurazione server.");
         }
     }
         

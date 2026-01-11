@@ -18,27 +18,27 @@ public class SessionManager extends Subject implements Observer{
         return instance;
     }
 
-    public String GetUsername() {
+    public String getUsername() {
         return current_user.getUsername();
     }
 
-    private void SetUsername(String username) {
+    private void setUsername(String username) {
         current_user.setUsername(username);
     }
 
-    public String GetEmail() {
+    public String getEmail() {
         return current_user.getEmail();
     }
 
-    private void SetEmail(String email) {
+    private void setEmail(String email) {
         current_user.setEmail(email);
     }
 
-    public String GetJWT() {
+    public String getJWT() {
         return current_user.getJWT();
     }
 
-    private void SetJWT(String JWT) {
+    private void setJWT(String JWT) {
         current_user.setJWT(JWT);
     }
 
