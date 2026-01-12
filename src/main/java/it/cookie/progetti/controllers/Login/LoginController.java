@@ -12,25 +12,16 @@ import it.cookie.utils.network.user.UserNetController;
 import it.cookie.utils.network.user.user;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class LoginController implements Observer{
     Locale locale = Locale.forLanguageTag("it-IT");
     ResourceBundle bundle = ResourceBundle.getBundle("i18n.language", locale);
     UserNetController userNetController = new UserNetController();
-
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
 
     @FXML
     private TextField usernameField;
@@ -102,43 +93,7 @@ public class LoginController implements Observer{
     @FXML
     @SuppressWarnings("unused")
     private void handleChangeServerButton(ActionEvent event) throws IOException {
-        try {
-        // Carica la vista del ServerConfigView
-        root = FXMLLoader.load(getClass().getResource("/FXML/Login/Settings/ServerConfigView.fxml"), bundle);
-        //scene = new Scene(root);
-        //PrimaryStage.setScene(scene);
-        //PrimaryStage.show();
-
-        // Crea un nuovo stage
-        Stage popupStage = new Stage();
-
-        //inizializza lo stage in modalità popup
-        popupStage.initModality(Modality.WINDOW_MODAL);
-
-        // recupera lo stage (di partenza) dal bottone cliccato
-        Stage starterStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        popupStage.initOwner(starterStage);
-
-        popupStage.setMinWidth(512);  // Impedisce alla finestra di stringersi troppo
-        popupStage.setMinHeight(381); // Impedisce alla finestra di abbassarsi troppo
-
-        popupStage.setTitle(bundle.getString("login.ChangeServer"));
-        Scene changeServerScene = new Scene(root, 256,128);
-
-        popupStage.setScene(changeServerScene);
-
-        // Centra la finestra popup rispetto alla finestra di partenza
-        double centerX = starterStage.getX() + starterStage.getWidth() / 2;
-        double centerY = starterStage.getY() + starterStage.getHeight() / 2;
-
-        popupStage.setX(centerX - 512.0 / 2);
-        popupStage.setY(centerY - 381.0 / 2);
-
-        popupStage.showAndWait();
-
-        } catch (IOException e) {
-            // e.printStackTrace();
-            System.out.println("Errore nel caricamento della finestra di configurazione server.");
-        }
+        SceneManager.getInstance().loadPopupScene(event, SceneManager.SceneKeys.SERVER_CONFIG_POPUP, 
+            bundle.getString("serverchange.title"), 500, 300);
     }
 }
