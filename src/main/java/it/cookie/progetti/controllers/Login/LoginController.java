@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import it.cookie.progetti.managers.SceneManager;
 import it.cookie.utils.interfaces.observer.Observer;
 import it.cookie.utils.interfaces.observer.Subject;
 import it.cookie.utils.network.managers.SessionManager;
@@ -15,7 +16,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
@@ -57,7 +57,7 @@ public class LoginController implements Observer{
     private void handleLoginButtonAction() throws IOException {
         if (usernameField.getText().isEmpty() || passwordField.getText().isEmpty()) {
             System.out.println("Username or Password is empty!");
-            showAlert(bundle.getString("login.Warning"), bundle.getString("login.MISSING_FIELDS"), AlertType.WARNING);
+            SceneManager.getInstance().showAlert(bundle.getString("login.Warning"), bundle.getString("login.MISSING_FIELDS"), AlertType.WARNING);
             return;
         }
         // disabilita il bottone per evitare spam
@@ -85,18 +85,16 @@ public class LoginController implements Observer{
             loginButton.setDisable(false);
 
             if (state instanceof user) {
-               try {
-                   switchToMainMenu();
-                } catch (IOException e) {
-                    // e.printStackTrace();
-                    System.out.println("Forse errore di connessione?");
-                }
+                SceneManager.getInstance()
+                    .loadScene((Stage)loginButton.getScene().getWindow(), 
+                        SceneManager.SceneKeys.MAIN_MENU_VIEW, 
+                        bundle.getString("menu.TITLE"), 1024, 768);    
             } else if (state instanceof String errorKey){
                 // Qui state è una stringa di errore del bundle. 
-                showAlert(bundle.getString("login.Error"), bundle.getString(errorKey), AlertType.ERROR);
+                SceneManager.getInstance().showAlert(bundle.getString("login.Error"), bundle.getString(errorKey), AlertType.ERROR);
             } else {
                 // Caso generico se state fosse null
-                showAlert(bundle.getString("login.Error"), bundle.getString("login.CONNECTION_ERROR"), AlertType.ERROR);
+                SceneManager.getInstance().showAlert(bundle.getString("login.Error"), bundle.getString("login.CONNECTION_ERROR"), AlertType.ERROR);
             }
         });
     }
@@ -143,21 +141,4 @@ public class LoginController implements Observer{
             System.out.println("Errore nel caricamento della finestra di configurazione server.");
         }
     }
-        
-    private void showAlert(String title, String message, AlertType alertType) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    private void switchToMainMenu() throws IOException {
-        root = FXMLLoader.load(getClass().getResource("/FXML/MainMenu/MainMenu.fxml"), bundle);
-        stage = (Stage)loginButton.getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-        userNetController.DetachAll(); // Evita di tenere Observer inutili
-    } 
 }
