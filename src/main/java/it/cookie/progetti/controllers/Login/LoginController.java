@@ -49,6 +49,13 @@ public class LoginController implements Observer{
         if (usernameField.getText().isEmpty() || passwordField.getText().isEmpty()) {
             System.out.println("Username or Password is empty!");
             SceneManager.getInstance().showAlert(bundle.getString("login.Warning"), bundle.getString("login.MISSING_FIELDS"), AlertType.WARNING);
+            
+            // DEBUG: accesso automatico per test
+            SceneManager.getInstance()
+                    .loadScene((Stage)loginButton.getScene().getWindow(), 
+                        SceneManager.SceneKeys.MAIN_MENU_VIEW, 
+                        bundle.getString("menu.TITLE"), 1536, 768); 
+            
             return;
         }
         // disabilita il bottone per evitare spam

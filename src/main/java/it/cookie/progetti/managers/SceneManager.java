@@ -74,6 +74,9 @@ public class SceneManager {
 
             stage.setTitle(title);
             stage.setScene(scene);
+            
+            // mette lo stage al centro dello schermo
+            stage.centerOnScreen();
 
             System.out.println("Caricata scena: " + sceneKey.getKey());
             stage.show();
