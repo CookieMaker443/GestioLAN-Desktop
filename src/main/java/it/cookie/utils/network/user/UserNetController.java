@@ -35,6 +35,9 @@ public class UserNetController extends Subject {
                 .uri(URI.create("http://" + NetworkManager.GetIstance().getIP() + ":" + NetworkManager.GetIstance().getPort() + "/api/Users/Login"))
                 .timeout(java.time.Duration.ofMillis(NetworkManager.GetIstance().getTimeout())) // Se dopo X secondi non risponde, "uccidi" la richiesta
                 .header("Content-Type", "application/json")
+                .header("Accept", "application/json")
+                .header("User-Agent", "JavaHttpClient")
+                .header("Autentication", "Bearer ") // Token vuoto per il login
                 .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
                 .build();
 
