@@ -68,3 +68,7 @@ local.properties
 captures/
 *.apk
 *.aar
+
+# File temporanei di blocco degli editor
+.*.LCK*
+*~
