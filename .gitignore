@@ -1,15 +1,16 @@
 # ----------------------------------------------------------------------
 # 1. Maven Build Artifacts (Devono essere ignorati ovunque)
 # ----------------------------------------------------------------------
-# Ignora la cartella di output di Maven
+# IGNORA LE CARTELLE TARGET IN TUTTI I SOTTO-MODULI (shared, desktop, ecc.)
+**/target/
 target/
 
 GEMINI.md
 LLM_output/
 
-# Ignora i log e i report di test di Maven
-target/surefire-reports/*
-target/failsafe-reports/*
+# Ignora i log e i report di test di Maven in qualsiasi modulo
+**/target/surefire-reports/*
+**/target/failsafe-reports/*
 test-output/
 
 # ----------------------------------------------------------------------
@@ -40,19 +41,30 @@ hs_err_pid*
 # ----------------------------------------------------------------------
 # 4. File Utili per Maven (se generati fuori da target/)
 # ----------------------------------------------------------------------
-# Quando esegui mvn clean install, a volte crea questi in locale
 dependency-reduced-pom.xml
 
 # ----------------------------------------------------------------------
-# 5. File di risorse assets
+# 5. File di risorse assets (Aggiornato per struttura multi-modulo)
 # ----------------------------------------------------------------------
+# Il prefisso **/ permette di intercettare le immagini anche se ora sono dentro "desktop/"
+**/src/main/resources/assets/images/*.png
+**/src/main/resources/assets/images/*.jpeg
+**/src/main/resources/assets/images/*.svg
+**/src/main/resources/assets/images/*.xcf
 
-src/main/resources/assets/images/*.png
-src/main/resources/assets/images/*.jpeg
-src/main/resources/assets/images/*.svg
-src/main/resources/assets/images/*.xcf
+**/src/main/resources/assets/images/svgs/*.png
+**/src/main/resources/assets/images/svgs/*.jpeg
+**/src/main/resources/assets/images/svgs/*.svg
+**/src/main/resources/assets/images/svgs/*.xcf
+.fake
 
-src/main/resources/assets/images/svgs/*.png
-src/main/resources/assets/images/svgs/*.jpeg
-src/main/resources/assets/images/svgs/*.svg
-src/main/resources/assets/images/svgs/*.xcf
+# ----------------------------------------------------------------------
+# 6. Predisposizione per Android Studio (Gradle)
+# ----------------------------------------------------------------------
+.gradle/
+**/build/
+local.properties
+.navigation/
+captures/
+*.apk
+*.aar
